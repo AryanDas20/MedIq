@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>MediMind — AI-Guided Patient Care Platform (Demo)</title>
+<meta name="description" content="MediMind demo: patient accounts, an AI health assistant, medical report summarizer, and a doctor dashboard — all running locally in your browser." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23090b12'/%3E%3Cpath d='M10 34h10l5-14 8 28 6-18 4 4h11' fill='none' stroke='%2322d3ee' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<meta name="theme-color" content="#07080c" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="dark">
+
+<!-- ============================================================ PRELOADER -->
+<div id="preloader" aria-hidden="true">
+  <div class="pl-pulse-wrap">
+    <svg viewBox="0 0 120 60" width="150" height="75">
+      <polyline id="pl-line" points="0,30 22,30 32,8 42,52 52,18 60,30 120,30" fill="none" stroke="url(#plg)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs><linearGradient id="plg" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#22d3ee"/><stop offset="50%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#f472b6"/>
+      </linearGradient></defs>
+    </svg>
+  </div>
+  <div class="pl-word">Medi<span>Mind</span></div>
+  <div class="pl-bar"><i></i></div>
+  <div class="pl-msg" id="pl-msg">Booting health engine…</div>
+</div>
+
+<!-- ============================================================ AMBIENT LAYERS -->
+<canvas id="bg-particles" aria-hidden="true"></canvas>
+<div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="scroll-progress" id="scroll-progress"></div>
+<div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+<canvas id="fx-confetti" aria-hidden="true"></canvas>
+
+<!-- ============================================================ LANDING -->
+<div id="screen-landing">
+  <header class="l-header">
+    <div class="l-wrap">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 64 64" width="30" height="30"><rect width="64" height="64" rx="16" fill="#0d1018"/><path d="M10 34h10l5-14 8 28 6-18 4 4h11" fill="none" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="brand-trace"/></svg>
+        </span>
+        <span class="brand-text">Medi<span>Mind</span></span>
+      </div>
+      <nav class="l-nav">
+        <a href="#features-section">Features</a>
+        <a href="#how-section">How it works</a>
+        <a href="#about-section">About</a>
+        <a href="#doctors-preview-section">Doctors</a>
+      </nav>
+      <div class="l-actions">
+        <button class="btn-ghost" id="btn-open-login">Sign in</button>
+        <button class="btn-pill" id="btn-open-signup">Get Started</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-streak" aria-hidden="true"></div>
+    <div class="l-wrap hero-inner">
+      <span class="hero-badge pp-reveal">🩺 AI-Guided Personal Health, Reinvented</span>
+      <h1 class="hero-title pp-reveal" style="--d:80ms">Healthcare That<br/>Actually Knows <span class="grad-text">You</span></h1>
+      <p class="hero-sub pp-reveal" style="--d:160ms">One place for your medical history, an AI assistant that checks your past before it ever suggests anything, instant report summaries, and real doctors — booked in a tap.</p>
+      <div class="hero-cta pp-reveal" style="--d:240ms">
+        <button class="btn-pill lg" id="btn-hero-start">Create Free Account</button>
+        <button class="btn-ghost lg" id="btn-hero-demo">▶ Try Live Demo</button>
+      </div>
+      <div class="hero-steps pp-reveal" style="--d:320ms">
+        <div><b>1</b><span>Create your health profile</span><p>Allergies, history and injuries — stored under your account.</p></div>
+        <div><b>2</b><span>Talk to the AI assistant</span><p>It reads your history first, then asks the right questions.</p></div>
+        <div><b>3</b><span>Upload any report</span><p>Instant plain-English summary and trend comparison.</p></div>
+        <div><b>4</b><span>Book real doctors</span><p>Pick a specialist and confirm a slot in seconds.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="l-section" id="features-section">
+    <div class="l-wrap">
+      <span class="section-tag">Core features</span>
+      <h2 class="section-title">Four systems, one calm dashboard</h2>
+      <div class="feat-grid">
+        <div class="feat-card pp-reveal" data-tilt>
+          <span class="feat-icon" style="--c1:#22d3ee;--c2:#3b82f6">👤</span>
+          <h3>Patient Accounts</h3>
+          <p>Sign up, build a full health profile, and keep allergies, conditions and past injuries stored securely under your own account.</p>
+        </div>
+        <div class="feat-card pp-reveal" data-tilt style="--d:80ms">
+          <span class="feat-icon" style="--c1:#8b5cf6;--c2:#f472b6">🤖</span>
+          <h3>AI Health Assistant</h3>
+          <p>Checks your history before replying, asks smart follow-ups, and avoids suggestions that conflict with a recent condition.</p>
+        </div>
+        <div class="feat-card pp-reveal" data-tilt style="--d:160ms">
+          <span class="feat-icon" style="--c1:#34d399;--c2:#22d3ee">📄</span>
+          <h3>Report Summariser</h3>
+          <p>Upload a PDF or photo of a report. Get a plain-English summary and a previous-vs-latest comparison of your vitals.</p>
+        </div>
+        <div class="feat-card pp-reveal" data-tilt style="--d:240ms">
+          <span class="feat-icon" style="--c1:#fbbf24;--c2:#f472b6">🩺</span>
+          <h3>Doctor Dashboard</h3>
+          <p>Doctors see only the relevant history for patients who booked with them, plus a clean appointment schedule.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="l-section alt" id="how-section">
+    <div class="l-wrap">
+      <span class="section-tag">How it works</span>
+      <h2 class="section-title">From symptom to specialist in minutes</h2>
+      <div class="how-grid">
+        <div class="how-card pp-reveal"><span>01</span><h4>Describe how you feel</h4><p>Tell the assistant what's going on in your own words.</p></div>
+        <div class="how-card pp-reveal" style="--d:80ms"><span>02</span><h4>It checks your file first</h4><p>Allergies and recent injuries are weighed before anything is suggested.</p></div>
+        <div class="how-card pp-reveal" style="--d:160ms"><span>03</span><h4>Get a safe, tailored note</h4><p>Follow-up questions narrow things down, then a specialist is recommended.</p></div>
+        <div class="how-card pp-reveal" style="--d:240ms"><span>04</span><h4>Book instantly</h4><p>Pick a doctor's open slot — it lands on both your calendars.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="l-section" id="doctors-preview-section">
+    <div class="l-wrap">
+      <span class="section-tag">Meet the network</span>
+      <h2 class="section-title">Specialists ready to help</h2>
+      <div class="doc-preview-grid" id="landing-doctor-grid"></div>
+    </div>
+  </section>
+
+  <section class="l-section alt" id="about-section">
+    <div class="l-wrap about-wrap">
+      <div class="about-copy pp-reveal">
+        <span class="section-tag">About this project</span>
+        <h2 class="section-title">Why MediMind exists</h2>
+        <p>Most health apps forget you the moment you close them. MediMind's goal is a single continuous record — your allergies, your injuries, your past reports — that every future interaction, human or AI, is checked against. That one change removes the most common failure in digital health tools: generic advice that ignores what already happened to you.</p>
+        <p>This build is a fully interactive front-end demo. There's no real medical AI or hospital backend behind it — it runs entirely in your browser using rule-based logic and local storage — but every screen, flow and interaction is real, so you can click through the whole concept end to end.</p>
+        <div class="about-stats">
+          <div><b>4</b><span>Core systems</span></div>
+          <div><b>100%</b><span>Runs in-browser</span></div>
+          <div><b>0</b><span>Data leaves your device</span></div>
+        </div>
+      </div>
+      <div class="about-pdf pp-reveal">
+        <div class="pdf-card">
+          <span class="pdf-icon">📘</span>
+          <h3>Full Concept Document</h3>
+          <p>A complete write-up of the idea — from the problem it solves to how a production build with real AI and OCR would be architected.</p>
+          <button class="btn-pill" id="btn-download-concept">⬇ Download the PDF</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="l-footer">
+    <div class="l-wrap">
+      <span>MediMind — interactive demo. Not a real medical device or service. Always consult a licensed clinician.</span>
+      <button class="link-btn" id="footer-download-concept">Download concept PDF</button>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================ AUTH MODAL -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal auth-card">
+    <button class="modal-x" id="auth-close">✕</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-authtab="login">Sign in</button>
+      <button class="auth-tab" data-authtab="signup">Create account</button>
+      <button class="auth-tab" data-authtab="doctor">Doctor login</button>
+    </div>
+
+    <form id="form-login" class="auth-form">
+      <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com" required /></div>
+      <div class="field"><label>Password</label><input type="password" id="login-password" placeholder="••••••••" required /></div>
+      <button type="submit" class="btn-pill full">Sign in</button>
+      <button type="button" class="btn-ghost full" id="btn-demo-login">▶ Use demo patient account</button>
+      <p class="auth-hint">Demo login: <b>demo@patient.com</b> / <b>demo123</b></p>
+    </form>
+
+    <form id="form-signup" class="auth-form" hidden>
+      <div class="field-row">
+        <div class="field"><label>Full name</label><input type="text" id="signup-name" placeholder="Jordan Lee" required /></div>
+        <div class="field"><label>Date of birth</label><input type="date" id="signup-dob" /></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Gender</label>
+          <select id="signup-gender"><option>Prefer not to say</option><option>Female</option><option>Male</option><option>Other</option></select>
+        </div>
+        <div class="field"><label>Blood group</label>
+          <select id="signup-blood"><option>Unknown</option><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Email</label><input type="email" id="signup-email" placeholder="you@example.com" required /></div>
+      <div class="field"><label>Password</label><input type="password" id="signup-password" placeholder="Create a password" required /></div>
+      <button type="submit" class="btn-pill full">Create my account</button>
+    </form>
+
+    <div id="panel-doctor" class="auth-form" hidden>
+      <p class="auth-hint">Demo only — pick a doctor profile to see the clinician side of MediMind.</p>
+      <div id="doctor-login-list" class="doctor-login-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ PATIENT APP -->
+<div id="app-patient">
+  <header class="app-header">
+    <button class="icon-btn only-mobile" id="btn-sidebar-toggle">☰</button>
+    <div class="brand small">
+      <span class="brand-mark"><svg viewBox="0 0 64 64" width="24" height="24"><rect width="64" height="64" rx="16" fill="#0d1018"/><path d="M10 34h10l5-14 8 28 6-18 4 4h11" fill="none" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="brand-text">Medi<span>Mind</span></span>
+    </div>
+
+    <div class="header-search" id="header-search">
+      <span class="hs-icon">⌕</span>
+      <input type="text" id="global-search" placeholder="Search sections, doctors, actions…  ( / )" autocomplete="off" />
+      <kbd>/</kbd>
+      <div class="search-results" id="search-results"></div>
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="btn-screenshot" title="Screenshot (S)">📸</button>
+      <button class="icon-btn" id="btn-tour" title="Website tour (T)">🧭<span class="hb-lbl"> Tour</span></button>
+      <button class="icon-btn" id="btn-shortcuts" title="Keyboard shortcuts (?)">⌨<span class="hb-lbl"> Shortcuts</span></button>
+      <div class="theme-switch" id="theme-switch">
+        <button class="theme-opt" data-theme-set="light">☀</button>
+        <button class="theme-opt active" data-theme-set="dark">☾</button>
+        <span class="theme-slider"></span>
+      </div>
+      <div class="user-chip" id="user-chip">
+        <span class="user-avatar" id="user-avatar">?</span>
+        <span class="user-name" id="user-name">Guest</span>
+      </div>
+      <button class="btn-ghost sm" id="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <nav class="side-nav">
+        <button class="side-link active" data-view="overview"><span>📊</span>Overview</button>
+        <button class="side-link" data-view="assistant"><span>🤖</span>AI Assistant</button>
+        <button class="side-link" data-view="reports"><span>📄</span>Reports</button>
+        <button class="side-link" data-view="doctors"><span>🩺</span>Doctors &amp; Appointments</button>
+        <button class="side-link" data-view="profile"><span>🗂️</span>Medical Profile</button>
+        <button class="side-link" data-view="tips"><span>💡</span>Health Tips</button>
+        <button class="side-link" data-view="settings"><span>⚙️</span>Settings</button>
+      </nav>
+      <div class="sidebar-note">🔒 Demo data stays in this browser only.</div>
+    </aside>
+
+    <main class="main-content" id="main-content">
+
+      <!-- OVERVIEW -->
+      <section class="view active" id="view-overview">
+        <p class="view-greet" id="greet-text"></p>
+        <div class="disclaimer-strip">⚠️ Demo platform — simulated AI, not real medical advice. Always consult a licensed clinician.</div>
+
+        <div class="ov-grid">
+          <div class="panel ov-card pp-reveal">
+            <span class="panel-tag">Allergies on file</span>
+            <div class="ov-chip-list" id="ov-allergies"></div>
+          </div>
+          <div class="panel ov-card pp-reveal" style="--d:60ms">
+            <span class="panel-tag">Active conditions</span>
+            <div class="ov-chip-list" id="ov-conditions"></div>
+          </div>
+          <div class="panel ov-card pp-reveal" style="--d:120ms">
+            <span class="panel-tag">Recent injuries</span>
+            <div class="ov-chip-list" id="ov-injuries"></div>
+          </div>
+          <div class="panel ov-card pp-reveal" style="--d:180ms">
+            <span class="panel-tag">Upcoming appointment</span>
+            <div id="ov-next-appt">No appointments booked yet.</div>
+          </div>
+        </div>
+
+        <div class="panel-grid">
+          <div class="panel pp-reveal">
+            <div class="panel-head"><h2>Latest Vitals Trend</h2><span class="panel-tag">Previous vs. latest report</span></div>
+            <div id="ov-vitals-compare" class="vitals-compare"></div>
+          </div>
+          <div class="panel pp-reveal" style="--d:80ms">
+            <div class="panel-head"><h2>Quick Actions</h2></div>
+            <div class="quick-actions">
+              <button class="qa-btn" data-view-jump="assistant">🤖<span>Ask the AI assistant</span></button>
+              <button class="qa-btn" data-view-jump="reports">📄<span>Upload a report</span></button>
+              <button class="qa-btn" data-view-jump="doctors">🩺<span>Book a doctor</span></button>
+              <button class="qa-btn" id="qa-pdf">📘<span>Download health PDF</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>Recent Activity</h2></div>
+          <ul class="activity-list" id="activity-list"></ul>
+        </div>
+      </section>
+
+      <!-- AI ASSISTANT -->
+      <section class="view" id="view-assistant">
+        <div class="panel chat-panel">
+          <div class="panel-head">
+            <h2>🤖 AI Health Assistant</h2>
+            <span class="panel-tag">Reads your profile before replying</span>
+          </div>
+          <div class="chat-window" id="chat-window"></div>
+          <div class="chat-quick" id="chat-quick"></div>
+          <form id="chat-form" class="chat-form">
+            <input type="text" id="chat-input" placeholder="Describe how you're feeling…" autocomplete="off" />
+            <button type="submit" class="btn-pill">Send</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- REPORTS -->
+      <section class="view" id="view-reports">
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>Upload a Report</h2><span class="panel-tag">PDF or image</span></div>
+          <p class="panel-copy">Upload a lab report or scan. The assistant extracts the key numbers and writes a plain-English summary, saved to your profile.</p>
+          <div class="upload-row">
+            <label class="upload-drop" id="upload-drop">
+              <input type="file" id="report-file" accept=".pdf,image/*" hidden />
+              <span class="ud-icon">⬆</span>
+              <span>Click or drop a PDF / image here</span>
+            </label>
+            <button class="btn-ghost" id="btn-manual-report">+ Add vitals manually</button>
+          </div>
+          <div id="upload-progress" class="upload-progress" hidden><div class="up-bar"><i></i></div><span id="upload-progress-text">Analysing report…</span></div>
+        </div>
+
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>Previous vs. Latest</h2><span class="panel-tag">What changed</span></div>
+          <div id="reports-compare" class="vitals-compare"></div>
+        </div>
+
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>Report History</h2><span class="panel-tag" id="reports-count">0 reports</span></div>
+          <div id="reports-list" class="reports-list"></div>
+        </div>
+      </section>
+
+      <!-- DOCTORS -->
+      <section class="view" id="view-doctors">
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>Specialists</h2><span class="panel-tag">Tap a profile to book</span></div>
+          <div class="doc-grid" id="doc-grid"></div>
+        </div>
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>My Appointments</h2></div>
+          <div id="appt-list" class="appt-list"></div>
+        </div>
+      </section>
+
+      <!-- MEDICAL PROFILE -->
+      <section class="view" id="view-profile">
+        <div class="panel-grid">
+          <div class="panel pp-reveal">
+            <div class="panel-head"><h2>Basic Info</h2></div>
+            <form id="form-profile" class="profile-form">
+              <div class="field"><label>Full name</label><input type="text" id="p-name" /></div>
+              <div class="field-row">
+                <div class="field"><label>Date of birth</label><input type="date" id="p-dob" /></div>
+                <div class="field"><label>Blood group</label>
+                  <select id="p-blood"><option>Unknown</option><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select>
+                </div>
+              </div>
+              <button type="submit" class="btn-pill">Save changes</button>
+            </form>
+          </div>
+
+          <div class="panel pp-reveal" style="--d:60ms">
+            <div class="panel-head"><h2>Allergies</h2></div>
+            <div class="tag-input-row"><input type="text" id="allergy-input" placeholder="e.g. Penicillin" /><button class="btn-ghost" id="add-allergy">Add</button></div>
+            <div class="ov-chip-list editable" id="allergy-list"></div>
+          </div>
+        </div>
+
+        <div class="panel-grid">
+          <div class="panel pp-reveal">
+            <div class="panel-head"><h2>Conditions &amp; Past Illnesses</h2></div>
+            <form id="form-condition" class="mini-form">
+              <input type="text" id="condition-name" placeholder="Condition name" required />
+              <input type="date" id="condition-date" />
+              <button class="btn-ghost" type="submit">Add</button>
+            </form>
+            <div id="condition-list" class="record-list"></div>
+          </div>
+
+          <div class="panel pp-reveal" style="--d:60ms">
+            <div class="panel-head"><h2>Injuries</h2></div>
+            <form id="form-injury" class="mini-form">
+              <input type="text" id="injury-name" placeholder="e.g. Neck strain" required />
+              <input type="date" id="injury-date" />
+              <button class="btn-ghost" type="submit">Add</button>
+            </form>
+            <div id="injury-list" class="record-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TIPS -->
+      <section class="view" id="view-tips">
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>💡 Daily Health Tips</h2><span class="panel-tag">General wellness, not prescriptive</span></div>
+          <div class="tip-hero" id="tip-hero"></div>
+          <button class="btn-ghost" id="tip-next">Show another tip</button>
+        </div>
+        <div class="tips-grid" id="tips-grid"></div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view" id="view-settings">
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>Appearance</h2></div>
+          <div class="settings-row"><div><strong>Theme</strong><p class="panel-copy">Switch between light and dark.</p></div>
+            <div class="theme-switch" id="theme-switch-2"><button class="theme-opt" data-theme-set="light">☀ Light</button><button class="theme-opt active" data-theme-set="dark">☾ Dark</button><span class="theme-slider"></span></div>
+          </div>
+        </div>
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>Documents</h2></div>
+          <div class="settings-row"><div><strong>Concept document</strong><p class="panel-copy">The full idea, written up end to end.</p></div><button class="btn-pill" id="settings-download-concept">Download PDF</button></div>
+          <div class="settings-row"><div><strong>My health report</strong><p class="panel-copy">Profile + latest vitals as a PDF.</p></div><button class="btn-pill" id="settings-download-health">Download PDF</button></div>
+          <div class="settings-row"><div><strong>Screenshot current view</strong><p class="panel-copy">Save the section you're looking at as an image.</p></div><button class="btn-ghost" id="settings-screenshot">Take screenshot</button></div>
+        </div>
+        <div class="panel pp-reveal">
+          <div class="panel-head"><h2>Data</h2></div>
+          <div class="settings-row"><div><strong>Export backup</strong><p class="panel-copy">Download all your data as JSON.</p></div><button class="btn-ghost" id="settings-backup">Backup</button></div>
+          <div class="settings-row"><div><strong>Reset demo data</strong><p class="panel-copy">Clears everything stored in this browser.</p></div><button class="btn-ghost danger" id="settings-reset">Reset</button></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ============================================================ DOCTOR APP -->
+<div id="app-doctor">
+  <header class="app-header">
+    <div class="brand small">
+      <span class="brand-mark"><svg viewBox="0 0 64 64" width="24" height="24"><rect width="64" height="64" rx="16" fill="#0d1018"/><path d="M10 34h10l5-14 8 28 6-18 4 4h11" fill="none" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="brand-text">Medi<span>Mind</span> <small>for Clinicians</small></span>
+    </div>
+    <div class="header-actions" style="margin-left:auto">
+      <button class="icon-btn" id="doc-btn-screenshot" title="Screenshot">📸</button>
+      <div class="theme-switch" id="theme-switch-doc"><button class="theme-opt" data-theme-set="light">☀</button><button class="theme-opt active" data-theme-set="dark">☾</button><span class="theme-slider"></span></div>
+      <div class="user-chip"><span class="user-avatar" id="doc-avatar">D</span><span class="user-name" id="doc-name">Dr.</span></div>
+      <button class="btn-ghost sm" id="btn-doctor-logout">Logout</button>
+    </div>
+  </header>
+  <div class="app-shell">
+    <main class="main-content" id="doctor-main" style="grid-column:1/-1">
+      <section class="view active">
+        <p class="view-greet" id="doc-greet"></p>
+        <div class="ov-grid doc-stats">
+          <div class="panel ov-card"><span class="panel-tag">Total patients</span><div class="big-stat" id="doc-stat-patients">0</div></div>
+          <div class="panel ov-card"><span class="panel-tag">Upcoming appointments</span><div class="big-stat" id="doc-stat-upcoming">0</div></div>
+          <div class="panel ov-card"><span class="panel-tag">Specialty</span><div class="big-stat small" id="doc-stat-specialty">—</div></div>
+          <div class="panel ov-card"><span class="panel-tag">Rating</span><div class="big-stat" id="doc-stat-rating">—</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Appointment Schedule</h2><input type="text" id="doc-patient-search" class="toolbar-input" placeholder="Search patients…" /></div>
+          <div id="doc-appt-list" class="appt-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- Patient record modal (doctor view) -->
+<div class="modal-overlay" id="patient-record-modal">
+  <div class="modal wide">
+    <button class="modal-x" id="patient-record-close">✕</button>
+    <div id="patient-record-body"></div>
+  </div>
+</div>
+
+<!-- Booking modal -->
+<div class="modal-overlay" id="booking-modal">
+  <div class="modal">
+    <button class="modal-x" id="booking-close">✕</button>
+    <h2>Book an appointment</h2>
+    <div id="booking-doctor-info" class="booking-doc-info"></div>
+    <form id="booking-form">
+      <div class="field-row">
+        <div class="field"><label>Date</label><input type="date" id="booking-date" required /></div>
+        <div class="field"><label>Time</label><select id="booking-time" required></select></div>
+      </div>
+      <div class="field"><label>Reason for visit</label><textarea id="booking-reason" rows="3" placeholder="Briefly describe why you're booking…"></textarea></div>
+      <button type="submit" class="btn-pill full">Confirm appointment</button>
+    </form>
+  </div>
+</div>
+
+<!-- Report review modal -->
+<div class="modal-overlay" id="report-modal">
+  <div class="modal">
+    <button class="modal-x" id="report-close">✕</button>
+    <h2 id="report-modal-title">Review extracted data</h2>
+    <p class="panel-copy" id="report-modal-sub"></p>
+    <form id="report-form">
+      <div class="field-row">
+        <div class="field"><label>Heart rate (bpm)</label><input type="number" id="r-hr" required /></div>
+        <div class="field"><label>Blood sugar (mg/dL)</label><input type="number" id="r-sugar" required /></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Systolic BP</label><input type="number" id="r-sys" required /></div>
+        <div class="field"><label>Diastolic BP</label><input type="number" id="r-dia" required /></div>
+      </div>
+      <div class="field"><label>Cholesterol (mg/dL)</label><input type="number" id="r-chol" required /></div>
+      <button type="submit" class="btn-pill full">Save to profile</button>
+    </form>
+  </div>
+</div>
+
+<!-- Guided tour -->
+<div class="modal-overlay" id="tour-prompt">
+  <div class="modal modal-narrow">
+    <div class="pl-float">🧭</div>
+    <h2>Want the full guided tour?</h2>
+    <p class="panel-copy">A complete walkthrough of every MediMind feature — accounts, the AI assistant, report comparisons, booking, the doctor dashboard and more. Skip any time, restart with the 🧭 Tour button or the <kbd>T</kbd> key.</p>
+    <div class="welcome-actions">
+      <button class="btn-pill full" id="tour-start">Start full tour</button>
+      <button class="btn-ghost full" id="tour-skip">Skip for now</button>
+    </div>
+  </div>
+</div>
+<div class="pp-tour" id="pp-tour">
+  <div class="pp-spot center" id="pp-spot"></div>
+  <div class="pp-card" id="pp-card" role="dialog" aria-live="polite"></div>
+</div>
+
+<!-- Shortcuts -->
+<div class="modal-overlay" id="shortcuts-modal">
+  <div class="modal modal-narrow" style="text-align:left">
+    <button class="modal-x" id="shortcuts-close">✕</button>
+    <h2>Keyboard shortcuts</h2>
+    <ul class="pp-keys">
+      <li><span><kbd>1</kbd>–<kbd>6</kbd></span> Switch sections</li>
+      <li><span><kbd>/</kbd></span> Focus search</li>
+      <li><span><kbd>T</kbd></span> Start guided tour</li>
+      <li><span><kbd>S</kbd></span> Screenshot current view</li>
+      <li><span><kbd>L</kbd></span> Toggle light / dark</li>
+      <li><span><kbd>Shift</kbd>+<kbd>L</kbd></span> Logout</li>
+      <li><span><kbd>?</kbd></span> This panel</li>
+      <li><span><kbd>Esc</kbd></span> Close any panel</li>
+    </ul>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
